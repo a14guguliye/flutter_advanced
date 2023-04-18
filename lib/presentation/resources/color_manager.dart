@@ -21,6 +21,6 @@ extension HexColor on Color {
     if (hexColorString.length == 6) {
       hexColorString = "FF$hexColorString";
     }
-    return Color(int.parse(hexColorString));
+    return Color(int.parse("0xff$hexColorString"));
   }
 }
