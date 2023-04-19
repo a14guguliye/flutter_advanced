@@ -37,7 +37,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 
   // late final List<SliderObject> _list = _getSliderData();
 
-  PageController _pageController = PageController(initialPage: 0);
+  final PageController _pageController = PageController(initialPage: 0);
 
   @override
   Widget build(BuildContext context) {
