@@ -1,4 +1,4 @@
-import 'package:complete_advanced_flutter/domain/model.dart';
+import 'package:complete_advanced_flutter/domain/model/model.dart';
 import 'package:dartz/dartz.dart';
 
 import '../data/network/failure.dart';

@@ -21,3 +21,12 @@ class Authentication {
 
   Authentication({required this.contacts, required this.customer});
 }
+
+class DeviceInfo {
+  String name;
+  String identifier;
+  String version;
+
+  DeviceInfo(
+      {required this.identifier, required this.name, required this.version});
+}

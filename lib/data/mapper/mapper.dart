@@ -1,7 +1,7 @@
 import 'package:complete_advanced_flutter/app/extensions.dart';
 import 'package:complete_advanced_flutter/data/responses/responses.dart';
 
-import '../../domain/model.dart';
+import '../../domain/model/model.dart';
 
 const EMPTY = "";
 
