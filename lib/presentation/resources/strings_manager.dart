@@ -23,4 +23,8 @@ class AppStrings {
   static const String registerText = "Not a member? Sign up";
   static const String usernameError = "Username is wrong";
   static const String passwordError = "Password is wrong";
+  static const String loading = "loading";
+  // ignore: constant_identifier_names
+  static const String retry_again = "Please retry";
+  static const String ok = "Ok";
 }

@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:complete_advanced_flutter/domain/usecase/login_usecase.dart';
+import 'package:complete_advanced_flutter/presentation/common/state_renderer/state_renderer.dart';
+import 'package:complete_advanced_flutter/presentation/common/state_renderer/state_renderer_impl.dart';
 
 import '../base/baseviewmodel.dart';
 import '../common/freezed_data_classes.dart';
@@ -15,11 +17,14 @@ class LoginViewModel extends BaseViewModel
   final StreamController _isAllInputsValidStreamController =
       StreamController<void>.broadcast();
 
+  final StreamController isUserLoggedInSuccessfullyStreamController =
+      StreamController<bool>();
+
   var loginObject = LoginObject("", "");
 
   late LoginUseCase _loginUseCase;
 
-  LoginViewModel(LoginUseCase? loginUseCase);
+  LoginViewModel(LoginUseCase loginUseCase) : _loginUseCase = loginUseCase;
 
   @override
   void dispose() {
@@ -27,11 +32,13 @@ class LoginViewModel extends BaseViewModel
     _userNameStreamController.close();
     _passwordStreamController.close();
     _isAllInputsValidStreamController.close();
+
+    isUserLoggedInSuccessfullyStreamController.close();
   }
 
   @override
   void start() {
-    // TODO: implement start
+    inputState.add(ContentState());
   }
 
   @override
@@ -44,17 +51,22 @@ class LoginViewModel extends BaseViewModel
 
   @override
   login() async {
-    // (await _loginUseCase.execute(LoginUseCaseInput(
-    //         email: loginObject.username, password: loginObject.password)))
-    //     .fold(
-    //         (failure) => {
-    //               //// left -- failure
-    //               print(failure.message)
-    //             },
-    //         (data) => {
-    //               ////right --right
-    //               print(data.customer?.name)
-    //             });
+    inputState.add(
+        LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
+    (await _loginUseCase.execute(LoginUseCaseInput(
+            email: loginObject.username, password: loginObject.password)))
+        .fold(
+            (failure) => {
+                  //// left -- failure
+                  inputState.add(ErrorState(
+                      stateRendererType: StateRendererType.POPUP_ERROR_STATE,
+                      message: failure.message))
+                }, (data) {
+      ////right --right
+      inputState.add(ContentState());
+
+      isUserLoggedInSuccessfullyStreamController.add(true);
+    });
   }
 
   @override

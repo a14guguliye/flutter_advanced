@@ -4,7 +4,7 @@ import 'package:complete_advanced_flutter/data/network/error_handler.dart';
 import 'package:complete_advanced_flutter/domain/model/model.dart';
 import 'package:complete_advanced_flutter/data/request/request.dart';
 import 'package:complete_advanced_flutter/data/network/failure.dart';
-import 'package:complete_advanced_flutter/domain/repository.dart';
+import 'package:complete_advanced_flutter/data/repository/repository.dart';
 import 'package:dartz/dartz.dart';
 
 import '../network/network_info.dart';
@@ -22,6 +22,53 @@ class RepositoryImpl extends Repository {
       try {
         /////it is safe to call the API
         final response = await remoteDataSource.login(loginRequest);
+
+        if (response.status == ApiInternalStatus.SUCCESS) {
+          return Right(response.toDomain());
+        } else {
+          return Left(Failure(
+              code: response.status.toString(),
+              message: response.message ?? ResponseMessage.UNKNOWN));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    }
+    ///// return connection error
+    ///
+    return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+  }
+
+  @override
+  Future<Either<Failure, String>> forgotPassword(String email) async {
+    if (await networkInfo.isConnected) {
+      try {
+        /////it is safe to call the API
+        final response = await remoteDataSource.forgotPassword(email);
+
+        if (response.status == ApiInternalStatus.SUCCESS) {
+          return Right(response.toDomain());
+        } else {
+          return Left(Failure(
+              code: response.status.toString(),
+              message: response.message ?? ResponseMessage.UNKNOWN));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    }
+    ///// return connection error
+    ///
+    return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+  }
+
+  @override
+  Future<Either<Failure, Authentication>> register(
+      RegisterRequest registerRequest) async {
+    if (await networkInfo.isConnected) {
+      try {
+        /////it is safe to call the API
+        final response = await remoteDataSource.register(registerRequest);
 
         if (response.status == ApiInternalStatus.SUCCESS) {
           return Right(response.toDomain());

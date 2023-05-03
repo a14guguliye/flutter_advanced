@@ -10,6 +10,7 @@ const String CONTENT_TYPE = "content-type";
 const String ACCEPT = "accept";
 const String AUTHORIZATION = "authorization";
 const String DEFAULT_LANGUAGE = "language";
+const String textPlain = "text/plain";
 
 class DioFactory {
   AppPreferences appPreferences;
@@ -23,7 +24,7 @@ class DioFactory {
     String? language = await appPreferences.getAppLanguage();
 
     Map<String, String> headers = {
-      CONTENT_TYPE: CONTENT_TYPE,
+      CONTENT_TYPE: textPlain,
       ACCEPT: APPLICATION_JSON,
       AUTHORIZATION: Constant.token,
       DEFAULT_LANGUAGE: language

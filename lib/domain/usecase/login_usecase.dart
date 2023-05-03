@@ -2,9 +2,19 @@ import 'package:complete_advanced_flutter/app/functions.dart';
 import 'package:complete_advanced_flutter/data/network/failure.dart';
 import 'package:complete_advanced_flutter/data/request/request.dart';
 import 'package:complete_advanced_flutter/domain/model/model.dart';
-import 'package:complete_advanced_flutter/domain/repository.dart';
+import 'package:complete_advanced_flutter/data/repository/repository.dart';
 import 'package:complete_advanced_flutter/domain/usecase/base_usecase.dart';
 import 'package:dartz/dartz.dart';
+
+class ForgotPasswordUseCase implements BaseUseCase<String, String> {
+  final Repository _repository;
+
+  ForgotPasswordUseCase(this._repository);
+
+  Future<Either<Failure, String>> execute(String email) async {
+    return await _repository.forgotPassword(email);
+  }
+}
 
 class LoginUseCase implements BaseUseCase<LoginUseCaseInput, Authentication> {
   Repository repository;
